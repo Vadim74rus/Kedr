@@ -20,10 +20,20 @@ const tg = window.Telegram.WebApp;
 function App() {
   const [count, setCount] = useState(parseFloat(localStorage.getItem('count') || '0'));
   const [isCounting, setIsCounting] = useState(false);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     tg.ready();
+    getUsername();
   }, []);
+
+  const getUsername = () => {
+    if (tg.auth) {
+      tg.auth.getUserInfo((user) => {
+        setUsername(user.first_name);
+      });
+    }
+  };
 
   const incrementCount = () => {
     if (!isCounting) {
@@ -46,9 +56,14 @@ function App() {
       <div style={{ textAlign: "center" }}>
         <h1 className="title">KEDR Community!</h1>
         <p className="count-text">K: {count.toFixed(3)}</p>
+        <p className="username">Username: {username}</p>
       </div>
       <div className="button-container">
-        <button className="start-button" disabled={isCounting} onClick={incrementCount}>
+        <button
+          className={`start-button ${isCounting ? 'counting' : ''}`}
+          disabled={isCounting}
+          onClick={incrementCount}
+        >
           {isCounting ? "Counting..." : "Start"}
         </button>
       </div>
