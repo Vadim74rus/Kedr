@@ -15,19 +15,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const tg = window.Telegram.WebApp;
+
 function App() {
   const [count, setCount] = useState(parseFloat(localStorage.getItem('count') || '0'));
   const [isCounting, setIsCounting] = useState(false);
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const telegramWidget = window.Telegram.Widget;
-    telegramWidget.onAuth(async (user) => {
-      if (user) {
-        setUsername(user.first_name);
-      }
-    });
+    tg.ready();
+    getUsername();
   }, []);
+
+  const getUsername = () => {
+    if (tg.auth) {
+      tg.auth.getUserInfo().then((response) => {
+        setUsername(response.user.first_name);
+      }).catch((error) => {
+        console.log('Error getting user info:', error);
+      });
+    }
+  };
 
   const incrementCount = () => {
     if (!isCounting) {
@@ -61,6 +69,7 @@ function App() {
           {isCounting ? "Counting..." : "Start"}
         </button>
       </div>
+      <button onClick={() => tg.close()}>Закрыть</button>
     </div>
   );
 }
