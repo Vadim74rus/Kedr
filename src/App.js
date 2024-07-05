@@ -53,7 +53,7 @@ function App() {
   return (
     <div className="App">
       <div className="app-container"></div>
-      <div style={{ textAlign: "center" }}>
+      <div className="content-container">
         <h1 className="title">KEDR Community!</h1>
         <p className="count-text">K: {count.toFixed(3)}</p>
         <p className="username">Username: {username}</p>

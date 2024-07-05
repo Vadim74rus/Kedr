@@ -4,8 +4,14 @@
   box-sizing: border-box;
 }
 
-
 body {
   background: var(--tg-theme-bg-color);
   color: var(--tg-theme-text-color);
+}
+
+.button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
