@@ -28,12 +28,11 @@ function App() {
   }, []);
 
   const getUsername = () => {
-    if (tg.auth) {
-      tg.auth.getUserInfo().then((response) => {
-        setUsername(response.user.first_name);
-      }).catch((error) => {
-        console.log('Error getting user info:', error);
-      });
+    if (tg.initDataUnsafe) {
+      const initData = tg.initDataUnsafe();
+      if (initData && initData.user) {
+        setUsername(initData.user.first_name);
+      }
     }
   };
 
