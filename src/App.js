@@ -29,8 +29,10 @@ function App() {
 
   const getUsername = () => {
     if (tg.auth) {
-      tg.auth.getUserInfo((user) => {
-        setUsername(user.first_name);
+      tg.auth.getUserInfo().then((response) => {
+        setUsername(response.user.first_name);
+      }).catch((error) => {
+        console.log('Error getting user info:', error);
       });
     }
   };
