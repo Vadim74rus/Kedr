@@ -1,6 +1,5 @@
 const tg = window.Telegram.WebApp;
 tg.initDataUnsafe = undefined;
-
 export function useTelegram(){
 
        const onClose = () => {
