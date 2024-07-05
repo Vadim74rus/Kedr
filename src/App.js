@@ -1,77 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import './App.css';
+import {useEffect} from "react";
+import {useTelegram} from "./hooks/useTelegram";
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+function  App() {
+    const {onToggleButton, tg} = useTelegram();
 
-const tg = window.Telegram.WebApp;
-
-function App() {
-  const [count, setCount] = useState(parseFloat(localStorage.getItem('count') || '0'));
-  const [isCounting, setIsCounting] = useState(false);
-  const [username, setUsername] = useState('');
-
-  useEffect(() => {
-    tg.ready();
-    getUsername();
-  }, []);
-
-  const getUsername = () => {
-    if (tg.auth) {
-      tg.auth.getUserInfo().then((response) => {
-        setUsername(response.user.first_name);
-      }).catch((error) => {
-        console.log('Error getting user info:', error);
-      });
+    useEffect(() => {
+        tg.ready()
+    }, []);
+    const onClose = () => {
+        tg.close()
     }
-  };
 
-  const incrementCount = () => {
-    if (!isCounting) {
-      setIsCounting(true);
-      let increment = 0.001;
-      const intervalId = setInterval(() => {
-        setCount((prevCount) => prevCount + increment);
-        increment += 0.001;
-      }, 1000);
-      setTimeout(() => {
-        clearInterval(intervalId);
-        setIsCounting(false);
-      }, 10000);
-    }
-  };
-
-  return (
-    <div className="App">
-      <div className="app-container"></div>
-      <div className="content-container">
-        <h1 className="title">KEDR Community!</h1>
-        <p className="count-text">K: {count.toFixed(3)}</p>
-        <p className="username">Username: {username}</p>
-      </div>
-      <div className="button-container">
-        <button
-          className={`start-button ${isCounting ? 'counting' : ''}`}
-          disabled={isCounting}
-          onClick={incrementCount}
-        >
-          {isCounting ? "Counting..." : "Start"}
-        </button>
-      </div>
-      <button onClick={() => tg.close()}>Закрыть</button>
-    </div>
-  );
+    return (
+        <div className="App">
+            <button onClick={onToggleButton}>toggle</button>
+        </div>
+    );
 }
 
 export default App;

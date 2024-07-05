@@ -1,6 +1,8 @@
 import React from 'react';
+import Button from "../Button";
 import {useTelegram} from "../../hooks/useTelegram";
-import * as tg from "react-dom/test-utils";
+import Button from "../Button";
+
 
 const Header = () => {
     const {user} = useTelegram();
