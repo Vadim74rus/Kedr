@@ -1,6 +1,7 @@
 import './App.css';
 import {useEffect} from "react";
 
+window.Telegram.WebApp = undefined;
 const tg = window.Telegram.WebApp;
 
 
